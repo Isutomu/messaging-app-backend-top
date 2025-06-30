@@ -43,6 +43,8 @@
     "helmet": "^8.1.0",
     "jsdom": "^26.1.0",
     "morgan": "^1.10.0",
-    "nodemailer": "^7.0.3"
+    "nodemailer": "^7.0.3",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
   }
 }
