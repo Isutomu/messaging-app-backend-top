@@ -1,0 +1,48 @@
+{
+  "name": "messaging-app-backend-top",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Isutomu/messaging-app-backend-top#readme",
+  "bugs": {
+    "url": "https://github.com/Isutomu/messaging-app-backend-top/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Isutomu/messaging-app-backend-top.git"
+  },
+  "prisma": {
+    "schema": "src/models/schema.prisma"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "jest --watch --runInBand",
+    "proxy": "lcp --proxyUrl http://localhost:8000 --origin http://localhost:5173 --credentials"
+  },
+  "devDependencies": {
+    "jest": "^30.0.3",
+    "nodemon": "^3.1.10",
+    "prettier-plugin-prisma": "^5.0.0",
+    "prisma": "^6.10.1",
+    "supertest": "^7.1.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.10.1",
+    "@quixo3/prisma-session-store": "^3.1.13",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dompurify": "^3.2.6",
+    "dotenv": "^16.6.0",
+    "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
+    "express-session": "^1.18.1",
+    "helmet": "^8.1.0",
+    "jsdom": "^26.1.0",
+    "morgan": "^1.10.0",
+    "nodemailer": "^7.0.3"
+  }
+}

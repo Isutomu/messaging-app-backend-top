@@ -1,0 +1,7 @@
+node_modules
+.env
+.env.local
+.env.tests
+data_example.json
+dev_only
+src/generated
