@@ -5,11 +5,11 @@ const bcrypt = require("bcryptjs");
 const { user } = require("../data/user");
 
 module.exports.addUser = async (prisma) => {
-  bcrypt.genSalt(process.env.SALT_ROUNDS, (err, salt) => {
+  bcrypt.genSalt(Number(process.env.SALT_ROUNDS), (err, salt) => {
     if (err) {
       throw err;
     }
-    bcrypt.hash("password", salt, async (err, hashedPassword) => {
+    bcrypt.hash(user.password, salt, async (err, hashedPassword) => {
       if (err) {
         throw err;
       }
