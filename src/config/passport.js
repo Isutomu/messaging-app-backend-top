@@ -20,7 +20,7 @@ const authStrategy = new LocalStrategy(async (username, password, done) => {
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return done({ message: "Senha incorreta" }, false);
+      return done({ status: 401, message: "Senha incorreta" }, false);
     }
     return done(null, user);
   } catch (err) {
