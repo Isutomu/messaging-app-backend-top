@@ -15,12 +15,12 @@ const authStrategy = new LocalStrategy(async (username, password, done) => {
       where: { username },
     });
     if (!user) {
-      return done({ status: 401, message: "Usuário não cadastrado" }, false);
+      return done({ status: 401, message: "Username not found" }, false);
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return done({ status: 401, message: "Senha incorreta" }, false);
+      return done({ status: 401, message: "Incorrect password" }, false);
     }
     return done(null, user);
   } catch (err) {
