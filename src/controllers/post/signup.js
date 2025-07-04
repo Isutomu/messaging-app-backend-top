@@ -31,8 +31,10 @@ module.exports.signup = [
   expressAsyncHandler(async (req, res, next) => {
     const { email, username, password } = req.body;
 
-    const userByEmail = await prisma.user.findFirst({ where: { email } });
-    const userByUsername = await prisma.user.findFirst({ where: { username } });
+    const userByEmail = await prisma.user.findUnique({ where: { email } });
+    const userByUsername = await prisma.user.findUnique({
+      where: { username },
+    });
     if (userByEmail) {
       return res
         .status(409)
@@ -51,9 +53,13 @@ module.exports.signup = [
         if (err) {
           throw err;
         }
-        await prisma.user.create({
-          data: { email, username, password: hashedPassword },
-        });
+        try {
+          await prisma.user.create({
+            data: { email, username, password: hashedPassword },
+          });
+        } catch (err) {
+          next(err);
+        }
       });
     });
 
