@@ -1,5 +1,11 @@
-module.exports.user = {
-  username: "test",
-  email: "test@test.com",
+module.exports.userLogin = {
+  username: "testLogin",
+  email: "testLogin@test.com",
+  password: "password",
+};
+
+module.exports.userSignup = {
+  username: "testSignup",
+  email: "testSignup@test.com",
   password: "password",
 };

@@ -13,5 +13,5 @@ module.exports.validatePassword = body("password").notEmpty().isLength({
 
 module.exports.validateEmail = body("email")
   .notEmpty()
-  .isLength({ max: 50 })
+  .isLength({ min: 5, max: 45 })
   .isEmail();

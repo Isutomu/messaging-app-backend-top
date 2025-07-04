@@ -11,7 +11,7 @@ const routes = require("../../src/routes");
 const { PrismaClient } = require("../../src/generated/client");
 const { cleanDatabase } = require("../helpers/cleanDatabase");
 const { addUser } = require("../helpers/addUser");
-const { user } = require("../data/user");
+const { userLogin, userSignup } = require("../data/user");
 
 // Constants
 const prisma = new PrismaClient({ datasourceUrl: process.env.DATABASE_URL });
@@ -51,14 +51,14 @@ app.use(passport.session());
 // Routes
 app.use("/", routes);
 
-beforeEach(async () => {
+beforeAll(async () => {
   await cleanDatabase(prisma);
 
   // For route GET /login
   await addUser(prisma);
 });
 
-afterEach(async () => {
+afterAll(async () => {
   await cleanDatabase(prisma);
 });
 
@@ -67,9 +67,28 @@ test("Login route", (done) => {
   request(app)
     .post("/login")
     .type("json")
-    .send({ username: user.username, password: user.password })
+    .send({ username: userLogin.username, password: userLogin.password })
     .expect("Content-type", /json/)
     .expect(200)
+    .end((err, res) => {
+      if (err) {
+        console.error(res.body);
+      }
+      done(err);
+    });
+});
+
+test("Sign up route", (done) => {
+  request(app)
+    .post("/signup")
+    .type("json")
+    .send({
+      email: userSignup.email,
+      username: userSignup.username,
+      password: userSignup.password,
+    })
+    .expect("Content-type", /json/)
+    .expect(201)
     .end((err, res) => {
       if (err) {
         console.error(res.body);
