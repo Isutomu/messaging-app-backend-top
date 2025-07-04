@@ -24,7 +24,6 @@ const PORT = process.env.PORT;
 app.use(helmet());
 app.use(logger("tiny"));
 app.use(express.json({ limit: "50mb" }));
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session Setup
@@ -33,9 +32,9 @@ app.use(
     proxy: true,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 30,
-      secure: true,
       httpOnly: true,
-      sameSite: "none",
+      secure: process.env.COOKIE_SECURE,
+      sameSite: process.env.COOKIE_SAME_SITE,
     },
     secret: process.env.SESSION_SECRET,
     resave: false,

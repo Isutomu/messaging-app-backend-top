@@ -36,6 +36,6 @@ module.exports.login = [
     })(req, res, next);
   },
   (req, res) => {
-    return res.status(200).send({});
+    return res.status(200).send({ status: "success" });
   },
 ];
