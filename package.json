@@ -27,11 +27,11 @@
     "jest": "^30.0.3",
     "nodemon": "^3.1.10",
     "prettier-plugin-prisma": "^5.0.0",
-    "prisma": "^6.10.1",
+    "prisma": "^6.11.1",
     "supertest": "^7.1.1"
   },
   "dependencies": {
-    "@prisma/client": "^6.10.1",
+    "@prisma/client": "^6.11.1",
     "@quixo3/prisma-session-store": "^3.1.13",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
