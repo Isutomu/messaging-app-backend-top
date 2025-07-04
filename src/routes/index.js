@@ -3,12 +3,14 @@ const { Router } = require("express");
 
 // Local Modules
 const { login } = require("../controllers/post/login");
+const { verifySession } = require("../controllers/get/verifySession");
 
 // Initialization
 const router = Router();
 
 // Requests
 //--- UNPROTECTED ROUTES ---//
+router.get("/verify-session", verifySession);
 router.post("/login", login);
 
 //--- PROTECTED ROUTES ---//
