@@ -13,8 +13,11 @@ module.exports.addUser = async (prisma) => {
       if (err) {
         throw err;
       }
-      await prisma.user.create({
-        data: { ...userLogin, password: hashedPassword },
+      const user = await prisma.user.create({
+        data: {
+          ...userLogin,
+          password: hashedPassword,
+        },
       });
     });
   });

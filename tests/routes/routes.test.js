@@ -55,6 +55,8 @@ beforeAll(async () => {
   await cleanDatabase(prisma);
 
   // For route GET /login
+  // For route POST /send-reset-password-link
+  // For route POST /reset-password
   await addUser(prisma);
 });
 
@@ -89,6 +91,42 @@ test("Sign up route", (done) => {
     })
     .expect("Content-type", /json/)
     .expect(201)
+    .end((err, res) => {
+      if (err) {
+        console.error(res.body);
+      }
+      done(err);
+    });
+});
+
+test("Reset password route", (done) => {
+  request(app)
+    .post(
+      "/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJpZCIsImlhdCI6MTc1MTc0NTg2MzEyMSwiZXhwIjoxNzUxNzQ1OTcxMTIxfQ.ViHHsjiKbEWFZLZCtes8i__kv-VQvPPXf1peudPX99U",
+    )
+    .type("json")
+    .send({
+      password: "newPassword",
+    })
+    .expect("Content-type", /json/)
+    .expect(200)
+    .end((err, res) => {
+      if (err) {
+        console.error(res.body);
+      }
+      done(err);
+    });
+});
+
+test("Send reset password link route", (done) => {
+  request(app)
+    .post("/send-reset-password-link")
+    .type("json")
+    .send({
+      email: userLogin.email,
+    })
+    .expect("Content-type", /json/)
+    .expect(200)
     .end((err, res) => {
       if (err) {
         console.error(res.body);
