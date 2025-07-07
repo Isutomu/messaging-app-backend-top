@@ -1,70 +1,26 @@
 // 3rd Party Modules
-const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, "../../.env.tests") });
-const express = require("express");
 const request = require("supertest");
-const expressSession = require("express-session");
-const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 
 // Local Modules
+const { prisma, app } = require("../helpers/setupTests");
 const routes = require("../../src/routes");
-const { PrismaClient } = require("../../src/generated/client");
+const { userLogin, userSignup } = require("../data/user");
 const { cleanDatabase } = require("../helpers/cleanDatabase");
 const { addUser } = require("../helpers/addUser");
-const { userLogin, userSignup } = require("../data/user");
 
-// Constants
-const prisma = new PrismaClient({ datasourceUrl: process.env.DATABASE_URL });
-
-// Server Initialization
-const app = express();
-
-// Middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Session Setup
-app.use(
-  expressSession({
-    proxy: true,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 30,
-      secure: true,
-      httpOnly: true,
-      sameSite: "none",
-    },
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: new PrismaSessionStore(prisma, {
-      checkPeriod: 1000 * 60 * 10,
-      dbRecordIdIsSessionId: true,
-      dbRecordIdFunction: undefined,
-    }),
-  }),
-);
-
-// Passport Authentication
-const passport = require("../../src/config/passport");
-app.use(passport.session());
-
-// Routes
-app.use("/", routes);
-
+//----------- SETTING UP TESTS -----------//
 beforeAll(async () => {
   await cleanDatabase(prisma);
-
-  // For route GET /login
-  // For route POST /send-reset-password-link
-  // For route POST /reset-password
   await addUser(prisma);
 });
-
 afterAll(async () => {
   await cleanDatabase(prisma);
 });
 
-// Tests
+// Routes
+app.use(routes);
+
+//----------------- TESTS -----------------//
 test("Login route", (done) => {
   request(app)
     .post("/login")

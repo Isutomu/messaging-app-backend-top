@@ -14,3 +14,19 @@ module.exports.userSignup = {
   email: "testSignup@test.com",
   password: "password",
 };
+
+module.exports.friendUserLogin1 = {
+  id: "friendId1",
+  username: "testFriendLogin1",
+  email: "testFriendLogin1@test.com",
+  password: "password1",
+  friendId: "id",
+};
+
+module.exports.friendUserLogin2 = {
+  id: "friendId2",
+  username: "testFriendLogin2",
+  email: "testFriendLogin2@test.com",
+  password: "password2",
+  friendId: "id",
+};
