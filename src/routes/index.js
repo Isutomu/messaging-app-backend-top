@@ -9,6 +9,8 @@ const {
   sendResetPasswordLink,
 } = require("../controllers/post/sendResetPasswordLink");
 const { resetPassword } = require("../controllers/post/resetPassword");
+const { isLogged } = require("../middlewares/isLogged");
+const { friends } = require("../controllers/get/friends");
 
 // Initialization
 const router = Router();
@@ -22,5 +24,7 @@ router.post("/send-reset-password-link", sendResetPasswordLink);
 router.post("/reset-password", resetPassword);
 
 //--- PROTECTED ROUTES ---//
+router.use(isLogged);
+router.get("/friends", friends);
 
 module.exports = router;
