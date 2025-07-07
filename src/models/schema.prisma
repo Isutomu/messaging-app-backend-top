@@ -29,9 +29,8 @@ model User {
   password String
   data     Json?
 
-  friendId         String?
-  friend           User?          @relation("UserToUser", fields: [friendId], references: [id])
-  friends          User[]         @relation("UserToUser")
+  friends          User[]         @relation("friends")
+  friendOf         User[]         @relation("friends")
   messagesSent     Message[]      @relation("MessagesSent")
   messagesReceived Message[]      @relation("MessagesReceived")
   group            Group[]
