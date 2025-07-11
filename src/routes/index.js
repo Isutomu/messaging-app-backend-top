@@ -13,6 +13,9 @@ const { isLogged } = require("../middlewares/isLogged");
 const { friends } = require("../controllers/get/friends");
 const { getMessages } = require("../controllers/get/messages");
 const { postMessage } = require("../controllers/post/messages");
+const { changeEmail } = require("../controllers/post/email");
+const { changeUsername } = require("../controllers/post/username");
+const { changePassword } = require("../controllers/post/password");
 
 // Initialization
 const router = Router();
@@ -30,5 +33,8 @@ router.use(isLogged);
 router.get("/friends", friends);
 router.get("/messages/:username", getMessages);
 router.post("/messages/:username", postMessage);
+router.post("/settings/email", changeEmail);
+router.post("/settings/username", changeUsername);
+router.post("/settings/password", changePassword);
 
 module.exports = router;
