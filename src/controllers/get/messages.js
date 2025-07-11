@@ -17,8 +17,7 @@ const findMessages = async (sender, receiver) => {
   });
 
   return messages.map((message) => ({
-    content: message.content,
-    creationTime: message.creationTime,
+    ...message,
     sender,
   }));
 };
