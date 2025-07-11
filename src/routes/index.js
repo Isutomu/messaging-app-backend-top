@@ -12,6 +12,7 @@ const { resetPassword } = require("../controllers/post/resetPassword");
 const { isLogged } = require("../middlewares/isLogged");
 const { friends } = require("../controllers/get/friends");
 const { getMessages } = require("../controllers/get/messages");
+const { postMessage } = require("../controllers/post/messages");
 
 // Initialization
 const router = Router();
@@ -28,5 +29,6 @@ router.post("/reset-password", resetPassword);
 router.use(isLogged);
 router.get("/friends", friends);
 router.get("/messages/:username", getMessages);
+router.post("/messages/:username", postMessage);
 
 module.exports = router;
