@@ -1,7 +1,7 @@
 module.exports.userLogin = {
   id: "id",
-  username: "testLogin",
-  email: "testLogin@test.com",
+  username: "username",
+  email: "email@email.com",
   password: "password",
   data: {
     resetPasswordToken:
