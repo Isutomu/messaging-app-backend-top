@@ -15,3 +15,7 @@ module.exports.validateEmail = body("email")
   .notEmpty()
   .isLength({ min: 5, max: 45 })
   .isEmail();
+
+module.exports.validateMessage = body("message").notEmpty().isLength({
+  max: 130,
+});
