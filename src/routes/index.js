@@ -16,6 +16,8 @@ const { postMessage } = require("../controllers/post/messages");
 const { changeEmail } = require("../controllers/post/email");
 const { changeUsername } = require("../controllers/post/username");
 const { changePassword } = require("../controllers/post/password");
+const { search } = require("../controllers/get/search");
+const { addFriend } = require("../controllers/post/friends");
 
 // Initialization
 const router = Router();
@@ -32,9 +34,11 @@ router.post("/reset-password", resetPassword);
 router.use(isLogged);
 router.get("/friends", friends);
 router.get("/messages/:username", getMessages);
+router.get("/search", search);
 router.post("/messages/:username", postMessage);
 router.post("/settings/email", changeEmail);
 router.post("/settings/username", changeUsername);
+router.post("/settings/password", changePassword);
 router.post("/settings/password", changePassword);
 
 module.exports = router;
