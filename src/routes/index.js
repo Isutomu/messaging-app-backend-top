@@ -40,5 +40,6 @@ router.post("/settings/email", changeEmail);
 router.post("/settings/username", changeUsername);
 router.post("/settings/password", changePassword);
 router.post("/settings/password", changePassword);
+router.post("/friends/:username", addFriend);
 
 module.exports = router;
