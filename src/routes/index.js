@@ -18,6 +18,7 @@ const { changeUsername } = require("../controllers/post/username");
 const { changePassword } = require("../controllers/post/password");
 const { search } = require("../controllers/get/search");
 const { addFriend } = require("../controllers/post/friends");
+const { logout } = require("../controllers/post/logout");
 
 // Initialization
 const router = Router();
@@ -41,5 +42,6 @@ router.post("/settings/username", changeUsername);
 router.post("/settings/password", changePassword);
 router.post("/settings/password", changePassword);
 router.post("/friends/:username", addFriend);
+router.post("/logout", logout);
 
 module.exports = router;
