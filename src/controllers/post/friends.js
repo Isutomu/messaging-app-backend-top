@@ -18,6 +18,13 @@ module.exports.addFriend = expressAsyncHandler(async (req, res) => {
         friendOf: { connect: { username } },
       },
     });
+    await prisma.chat.create({
+      data: {
+        users: {
+          connect: [{ id: req.user.id }, { username }],
+        },
+      },
+    });
   } catch {
     return res.status(500).send({
       status: "error",

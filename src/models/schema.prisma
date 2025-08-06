@@ -29,12 +29,19 @@ model User {
   password String
   data     Json?
 
-  friends          User[]         @relation("friends")
-  friendOf         User[]         @relation("friends")
-  messagesSent     Message[]      @relation("MessagesSent")
-  messagesReceived Message[]      @relation("MessagesReceived")
-  group            Group[]
-  groupMessages    GroupMessage[]
+  friends      User[]    @relation("friends")
+  friendOf     User[]    @relation("friends")
+  chats        Chat[]
+  messagesSent Message[]
+}
+
+model Chat {
+  id    String  @id @default(uuid())
+  name  String?
+  group Boolean @default(false)
+
+  users    User[]
+  messages Message[]
 }
 
 model Message {
@@ -42,11 +49,11 @@ model Message {
   content      String   @db.VarChar(140)
   creationTime DateTime @default(now())
 
-  file       File?
-  sender     User   @relation("MessagesSent", fields: [senderId], references: [id])
-  senderId   String
-  receiver   User   @relation("MessagesReceived", fields: [receiverId], references: [id])
-  receiverId String
+  file     File?
+  sender   User   @relation(fields: [senderId], references: [id])
+  senderId String
+  chat     Chat   @relation(fields: [chatId], references: [id])
+  chatId   String
 }
 
 model File {
@@ -57,34 +64,4 @@ model File {
 
   message   Message @relation(fields: [messageId], references: [id])
   messageId String  @unique
-}
-
-model Group {
-  id   String @id @default(uuid())
-  name String
-
-  users         User[]
-  groupMessages GroupMessage[]
-}
-
-model GroupMessage {
-  id           String   @id @default(uuid())
-  content      String   @db.VarChar(140)
-  creationTime DateTime @default(now())
-
-  file     GroupFile?
-  sender   User       @relation(fields: [senderId], references: [id])
-  senderId String
-  group    Group      @relation(fields: [groupId], references: [id])
-  groupId  String
-}
-
-model GroupFile {
-  id                String  @id @default(uuid())
-  name              String  @db.VarChar(50)
-  url               String?
-  urlExpirationDate String?
-
-  groupMessage   GroupMessage @relation(fields: [groupMessageId], references: [id])
-  groupMessageId String       @unique
 }

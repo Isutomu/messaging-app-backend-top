@@ -10,7 +10,6 @@ const {
 } = require("../controllers/post/sendResetPasswordLink");
 const { resetPassword } = require("../controllers/post/resetPassword");
 const { isLogged } = require("../middlewares/isLogged");
-const { friends } = require("../controllers/get/friends");
 const { getMessages } = require("../controllers/get/messages");
 const { postMessage } = require("../controllers/post/messages");
 const { changeEmail } = require("../controllers/post/email");
@@ -19,6 +18,7 @@ const { changePassword } = require("../controllers/post/password");
 const { search } = require("../controllers/get/search");
 const { addFriend } = require("../controllers/post/friends");
 const { logout } = require("../controllers/post/logout");
+const { chats } = require("../controllers/get/chats");
 
 // Initialization
 const router = Router();
@@ -33,10 +33,10 @@ router.post("/reset-password", resetPassword);
 
 //--- PROTECTED ROUTES ---//
 router.use(isLogged);
-router.get("/friends", friends);
-router.get("/messages/:username", getMessages);
+router.get("/chats", chats);
+router.get("/messages/:chatId", getMessages);
 router.get("/search", search);
-router.post("/messages/:username", postMessage);
+router.post("/messages/:chatId", postMessage);
 router.post("/settings/email", changeEmail);
 router.post("/settings/username", changeUsername);
 router.post("/settings/password", changePassword);

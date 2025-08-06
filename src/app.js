@@ -1,12 +1,14 @@
 // 3rd Part Modules
 require("dotenv/config");
 const express = require("express");
+const { createServer } = require("http");
 const helmet = require("helmet");
 const cors = require("cors");
 const logger = require("morgan");
 const expressSession = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const passport = require("./config/passport");
+const { Server } = require("socket.io");
 
 // Local Modules
 const routes = require("./routes");
@@ -17,14 +19,25 @@ const { PrismaClient } = require("./generated/client");
 const prisma = new PrismaClient({ datasourceUrl: process.env.DATABASE_URL });
 
 // Server Initialization
-const app = express();
 const PORT = process.env.PORT;
+const app = express();
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: process.env.APP_BASE_URL,
+    methods: ["GET", "POST"],
+  },
+});
 
 // Middlewares
 app.use(helmet());
 app.use(logger("tiny"));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 // Session Setup
 app.use(
@@ -66,7 +79,17 @@ app.use(
 app.use(errorHandler);
 
 // Server Listening
-app.listen(PORT, (err) => {
+io.on("connection", (socket) => {
+  console.log("A user connected");
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+
+  socket.on("join room", (chatId) => {
+    socket.join(chatId);
+  });
+});
+server.listen(PORT, (err) => {
   if (!err) {
     console.log(
       `Server is Successfully Running, and App is listening on port ${PORT}`,

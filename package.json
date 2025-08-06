@@ -1,5 +1,4 @@
 {
-  "name": "messaging-app-backend-top",
   "version": "1.0.0",
   "description": "",
   "homepage": "https://github.com/Isutomu/messaging-app-backend-top#readme",
@@ -47,6 +46,7 @@
     "morgan": "^1.10.0",
     "nodemailer": "^7.0.3",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "socket.io": "^4.8.1"
   }
 }

@@ -6,32 +6,32 @@ const { PrismaClient } = require("../../generated/client");
 
 // Constants
 const prisma = new PrismaClient();
-const findMessages = async (sender, receiver) => {
-  const messages = await prisma.message.findMany({
-    where: {
-      receiver: { username: receiver },
-      sender: { username: sender },
-    },
-    select: { content: true, creationTime: true, id: true },
-    orderBy: { creationTime: "asc" },
-  });
-
-  return messages.map((message) => ({
-    ...message,
-    sender,
-  }));
-};
 
 module.exports.getMessages = expressAsyncHandler(async (req, res) => {
-  const username = req.user.username;
-  const friendUsername = req.params.username;
+  const chatId = req.params.chatId;
+  const chat = await prisma.chat.findFirst({
+    where: { id: chatId },
+    include: {
+      messages: {
+        orderBy: { creationTime: "asc" },
+        include: { sender: { select: { username: true } } },
+      },
+      users: true,
+    },
+  });
 
-  const messagesSent = await findMessages(username, friendUsername);
-  const messagesReceived = await findMessages(friendUsername, username);
+  const chatName = chat.group
+    ? chat.name
+    : chat.users.filter((user) => user.username !== req.user.username)[0]
+        .username;
+  const messages = chat.messages.map((message) => ({
+    id: message.id,
+    content: message.content,
+    sender: message.sender.username,
+  }));
 
-  const messages = messagesSent
-    .concat(messagesReceived)
-    .sort((a, b) => a.creationTime - b.creationTime);
-
-  return res.status(200).send({ status: "success", data: { messages } });
+  return res.status(200).send({
+    status: "success",
+    data: { chat: { name: chatName, messages: messages } },
+  });
 });
