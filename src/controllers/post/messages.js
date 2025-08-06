@@ -27,12 +27,10 @@ module.exports.postMessage = [
   },
   expressAsyncHandler(async (req, res) => {
     const { message } = req.body;
-    const { username } = req.user;
     const senderId = req.user.id;
     const chatId = req.params.chatId;
 
     const sanitizedMessage = sanitizeHTML(message);
-
     let createdMessage;
     try {
       createdMessage = await prisma.message.create({
@@ -41,6 +39,7 @@ module.exports.postMessage = [
           senderId,
           chatId,
         },
+        include: { sender: true },
       });
     } catch {
       return res.status(500).send({
@@ -49,14 +48,13 @@ module.exports.postMessage = [
       });
     }
 
-    req.io.in(chatId).emit("new message", {
-      chatId,
+    return res.status(201).send({
+      status: "success",
       message: {
         id: createdMessage.id,
-        sender: username,
-        content: sanitizedMessage,
+        content: createdMessage.content,
+        sender: createdMessage.sender.username,
       },
     });
-    return res.status(201).send({ status: "success" });
   }),
 ];

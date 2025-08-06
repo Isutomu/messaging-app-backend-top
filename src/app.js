@@ -34,10 +34,6 @@ app.use(helmet());
 app.use(logger("tiny"));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
 
 // Session Setup
 app.use(
@@ -80,13 +76,17 @@ app.use(errorHandler);
 
 // Server Listening
 io.on("connection", (socket) => {
-  console.log("A user connected");
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
+  socket.on("send message", (data) => {
+    console.log("send");
+    io.to(data.chatId).emit("receive message", { message: data.message });
   });
-
-  socket.on("join room", (chatId) => {
-    socket.join(chatId);
+  socket.on("join room", (data) => {
+    console.log("join");
+    socket.join(data.chatId);
+  });
+  socket.on("leave room", (data) => {
+    console.log("leave");
+    socket.leave(data.chatId);
   });
 });
 server.listen(PORT, (err) => {
